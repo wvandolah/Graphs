@@ -36,6 +36,7 @@ class BokehGraph:
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
         self.randomize()
         graph_renderer.layout_provider = StaticLayoutProvider(graph_layout=self.pos)
+        self.making_labels()
         self.plot.renderers.append(graph_renderer)
         
     
@@ -70,23 +71,32 @@ class BokehGraph:
             self.pos[vertex] = (1 + random() * (self.width - 2),
                                 1 + random() * (self.height - 2))
 
+    def making_labels(self):
+        x = []
+        y = []
+        names = []
+        for name, cords in self.pos.items():
+            x.append(cords[0])
+            y.append(cords[1])
+            names.append(name)
+        source = ColumnDataSource(data=dict(x=x, y=y, names=names))
+        labels = LabelSet(x='x', y='y', text='names', level='glyph',
+                        x_offset=10, y_offset=10, source=source, render_mode='canvas')
+        self.plot.add_layout(labels)
 
+"""
+this is used to randomly create new vertex and add edges
+"""
 i = set()
-
 for _ in range(25):
     rand = int(100 * random())
     i.add(rand)
 for n in i:
     graph.add_vertex(n)
-
 for _ in range(25):
     graph.add_edge(choice(tuple(i)), choice(tuple(i)))
 
+
 bg = BokehGraph(graph)
-
-
-print(graph.vertices)
-# print(bg.pos)
-# print(bg.plot)
 bg.show()
 
