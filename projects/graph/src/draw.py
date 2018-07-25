@@ -6,7 +6,8 @@ from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
-from graph import *
+from graph import Graph, Vertex
+
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
@@ -54,7 +55,7 @@ class BokehGraph:
 
         for vertex, edges in self.graph.vertices.items():
             if vertex not in checked:
-                for destination in edges:
+                for destination in edges.edges:
                     start_indices.append(vertex)
                     end_indices.append(destination)
                 checked.add(vertex)
@@ -87,14 +88,20 @@ class BokehGraph:
 """
 this is used to randomly create new vertex and add edges
 """
+graph = Graph()
+
 i = set()
+v = set()
 for _ in range(10):
     rand = int(100 * random())
     i.add(rand)
 for n in i:
+    n = Vertex(n)
     graph.add_vertex(n)
-for _ in range(10):
-    graph.add_edge(choice(tuple(i)), choice(tuple(i)))
+    v.add(n)
+
+for _ in range(7):
+    graph.add_edge(choice(tuple(v)), choice(tuple(v)))
 
 
 bg = BokehGraph(graph)

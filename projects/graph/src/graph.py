@@ -3,8 +3,15 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
-# class Vertex:
-#     def __init__
+class Vertex:
+    def __init__(self, label, color='white'):
+        self.label = label
+        self.edges = set()
+        self.color = color
+    
+    # def __repr__(self):
+    #     return str(self.label)
+
 
 class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
@@ -19,22 +26,33 @@ class Graph:
         if vertex in self.vertices:
             raise Exception("Error - vertex {} is already a thing".format(vertex))            
         if not set(edges).issubset(self.vertices):
-            raise Exception('error: connot have edge to nonexistent vertices')        
-        self.vertices[vertex] = set(edges)
+            raise Exception('error: connot have edge to nonexistent vertices')
+               
+        self.vertices[vertex.label] = vertex
 
     def add_edge(self, start, end, bi=True):
-        if start not in self.vertices or end not in self.vertices:
-            raise Exception("Error - vertices not in graph!")
-        self.vertices[start].add(end)
+        # if start not in self.vertices or end not in self.vertices:
+        #     raise Exception("Error - vertices not in graph!")
+        start.edges.add(end.label)
         if bi:
-            self.vertices[end].add(start)
+            end.edges.add(start.label)
 
-graph = Graph()  # Instantiate your graph
-# graph.add_vertex('0')
-# graph.add_vertex('1')
-# graph.add_vertex('2')
-# graph.add_vertex('3')
-# graph.add_edge('0', '1')
-# graph.add_edge('0', '3', False)
+# graph = Graph()  # Instantiate your graph
+# a = Vertex(0)
+# b = Vertex(1)
+# c = Vertex(2)
+# d = Vertex(3)
+
+# graph.add_vertex(a)
+# graph.add_vertex(b)
+# graph.add_vertex(c)
+# graph.add_vertex(d)
+
+# graph.add_edge(a, b)
+# graph.add_edge(a, d)
+
+
+
+
 
 
