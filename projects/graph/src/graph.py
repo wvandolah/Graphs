@@ -3,6 +3,8 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+from random import choice, random
+
 class Vertex:
     def __init__(self, label, color='white'):
         self.label = label
@@ -33,23 +35,47 @@ class Graph:
     def add_edge(self, start, end, bi=True):
         # if start not in self.vertices or end not in self.vertices:
         #     raise Exception("Error - vertices not in graph!")
-        start.edges.add(end.label)
+        start.edges.add(end)
         if bi:
-            end.edges.add(start.label)
+            end.edges.add(start)
 
-# graph = Graph()  # Instantiate your graph
-# a = Vertex(0)
-# b = Vertex(1)
-# c = Vertex(2)
-# d = Vertex(3)
+    def bfs(self, start):
+        random_color = '#' + \
+            ''.join([choice('0123456789ABCDEF') for j in range(6)])
+        queue = []
+        found = []
+        queue.append(start)
+        found.append(start)
 
-# graph.add_vertex(a)
-# graph.add_vertex(b)
-# graph.add_vertex(c)
-# graph.add_vertex(d)
+        start.color = random_color
+        
+        while (len(queue) > 0):
+            v = queue[0]
+            # print(v.edges)
+            for edge in v.edges:
+                # print(edge)
+                if edge not in found:
+                    found.append(edge)
+                    queue.append(edge)
+                    edge.color = random_color
 
-# graph.add_edge(a, b)
-# graph.add_edge(a, d)
+            queue.pop(0)  
+        # print(found)
+        return found
+    
+    def con_components(self):
+        """use bfs to find components connected"""
+
+        searched = []
+        
+        for index, vertex in self.vertices.items():
+            # print('whats being passed to bfs',vertex.color)
+            if vertex not in searched:
+                searched.append(self.bfs(vertex))
+        # print(searched)
+        
+
+
 
 
 

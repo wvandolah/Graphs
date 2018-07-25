@@ -43,9 +43,11 @@ class BokehGraph:
     
     def _get_random_colors(self):
         colors = []
-        for _ in range(len(self.graph.vertices)):
-            color = "#"+''.join([choice('0123456789ABCDEF') for j in range(6)])
-            colors.append(color)
+        # for _ in range(len(self.graph.vertices)):
+        #     color = "#"+''.join([choice('0123456789ABCDEF') for j in range(6)])
+        #     colors.append(color)
+        for key, value in self.graph.vertices.items():
+            colors.append(value.color)
         return colors
 
     def _get_edge_indexes(self):
@@ -56,8 +58,8 @@ class BokehGraph:
         for vertex, edges in self.graph.vertices.items():
             if vertex not in checked:
                 for destination in edges.edges:
-                    start_indices.append(vertex)
-                    end_indices.append(destination)
+                    start_indices.append(edges.label)
+                    end_indices.append(destination.label)
                 checked.add(vertex)
         return dict(start=start_indices, end= end_indices)
 
@@ -90,9 +92,10 @@ this is used to randomly create new vertex and add edges
 """
 graph = Graph()
 
+
 i = set()
 v = set()
-for _ in range(10):
+for _ in range(20):
     rand = int(100 * random())
     i.add(rand)
 for n in i:
@@ -100,10 +103,29 @@ for n in i:
     graph.add_vertex(n)
     v.add(n)
 
-for _ in range(7):
-    graph.add_edge(choice(tuple(v)), choice(tuple(v)))
+for _ in range(12):
+    first = choice(tuple(v))
+    second = choice(tuple(v))
+    graph.add_edge(first, second)
+    v.remove(first)
 
+"""
+non-random test
+"""
+# a = Vertex(0)
+# b = Vertex(1)
+# c = Vertex(2)
+# d = Vertex(30)
 
+# graph.add_vertex(a)
+# graph.add_vertex(b)
+# graph.add_vertex(c)
+# graph.add_vertex(d)
+
+# graph.add_edge(a, b)
+# graph.add_edge(a, d)
+
+graph.con_components()
 bg = BokehGraph(graph)
 bg.show()
 
