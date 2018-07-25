@@ -11,7 +11,7 @@ from graph import *
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
     def __init__(self, graph, title='Graph', width=10, height=10,
-                show_axis=False, show_grid=False, circle_size=35):
+                show_axis=False, show_grid=False, circle_size=25):
         if not graph.vertices:
             raise Exception('Graph should contain vertices!')
         self.graph = graph
@@ -68,8 +68,8 @@ class BokehGraph:
         """Randomize vertex positions."""
         for vertex in self.graph.vertices:
             # TODO make bounds and random draws less hacky
-            self.pos[vertex] = (1 + random() * (self.width - 2),
-                                1 + random() * (self.height - 2))
+            self.pos[vertex] = (1 + random() * (self.width - 1),
+                                1 + random() * (self.height - 1))
 
     def making_labels(self):
         x = []
@@ -80,20 +80,20 @@ class BokehGraph:
             y.append(cords[1])
             names.append(name)
         source = ColumnDataSource(data=dict(x=x, y=y, names=names))
-        labels = LabelSet(x='x', y='y', text='names', level='glyph',
-                        x_offset=10, y_offset=10, source=source, render_mode='canvas')
+        labels = LabelSet(x='x', y='y', text='names', level='overlay',
+                        text_align='center', text_baseline='middle',source=source, render_mode='canvas')
         self.plot.add_layout(labels)
 
 """
 this is used to randomly create new vertex and add edges
 """
 i = set()
-for _ in range(25):
+for _ in range(10):
     rand = int(100 * random())
     i.add(rand)
 for n in i:
     graph.add_vertex(n)
-for _ in range(25):
+for _ in range(10):
     graph.add_edge(choice(tuple(i)), choice(tuple(i)))
 
 
