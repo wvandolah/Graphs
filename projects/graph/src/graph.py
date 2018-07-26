@@ -12,8 +12,8 @@ class Vertex:
         self.edges = set()
         self.color = color
 
-    # def __repr__(self):
-    #     return str(self.label)
+    def __repr__(self):
+        return str(self.label)
 
 
 class Graph:
@@ -43,15 +43,13 @@ class Graph:
     def bfs(self, start):
         random_color = '#' + \
             ''.join([choice('0123456789ABCDEF') for j in range(6)])
-        queue = []
-        found = []
-        queue.append(start)
-        found.append(start)
+        queue = [start]
+        found = [start]
 
         start.color = random_color
 
-        while (len(queue) > 0):
-            v = queue[0]
+        while queue:
+            v = queue.pop()
             # print(v.edges)
             for edge in v.edges:
                 # print(edge)
@@ -60,8 +58,7 @@ class Graph:
                     queue.append(edge)
                     edge.color = random_color
 
-            queue.pop(0)
-        # print(found)
+        print(found)
         return found
 
     def con_components(self):
