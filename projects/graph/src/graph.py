@@ -1,18 +1,19 @@
 #!/usr/bin/python
- 
+
 """
 Simple graph implementation compatible with BokehGraph class.
 """
-from random import choice, random
+from random import choice
+
 
 class Vertex:
     def __init__(self, label, color='white'):
         self.label = label
         self.edges = set()
         self.color = color
-    
-    # def __repr__(self):
-    #     return str(self.label)
+
+    def __repr__(self):
+        return str(self.label)
 
 
 class Graph:
@@ -26,10 +27,10 @@ class Graph:
         https://docs.python.org/3.7/tutorial/datastructures.html#dictionaries
         """
         if vertex in self.vertices:
-            raise Exception("Error - vertex {} is already a thing".format(vertex))            
+            raise Exception("Error - vertex {} is already a thing".format(vertex))
         if not set(edges).issubset(self.vertices):
             raise Exception('error: connot have edge to nonexistent vertices')
-               
+
         self.vertices[vertex.label] = vertex
 
     def add_edge(self, start, end, bi=True):
@@ -48,7 +49,7 @@ class Graph:
         found.append(start)
 
         start.color = random_color
-        
+
         while (len(queue) > 0):
             v = queue[0]
             # print(v.edges)
@@ -59,26 +60,18 @@ class Graph:
                     queue.append(edge)
                     edge.color = random_color
 
-            queue.pop(0)  
+            queue.pop(0)
         # print(found)
         return found
-    
+
     def con_components(self):
         """use bfs to find components connected"""
 
         searched = []
-        
+
         for index, vertex in self.vertices.items():
             # print('whats being passed to bfs',vertex.color)
             if vertex not in searched:
                 searched.append(self.bfs(vertex))
         # print(searched)
-        
-
-
-
-
-
-
-
-
+        return searched

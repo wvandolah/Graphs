@@ -4,20 +4,20 @@ General drawing methods for graphs using Bokeh.
 from random import choice, random
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
-from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
-                          ColumnDataSource)
+from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle,
+                          LabelSet, ColumnDataSource)
 from graph import Graph, Vertex
 
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
     def __init__(self, graph, title='Graph', width=10, height=10,
-                show_axis=False, show_grid=False, circle_size=25):
+                 show_axis=False, show_grid=False, circle_size=25):
         if not graph.vertices:
             raise Exception('Graph should contain vertices!')
         self.graph = graph
 
-        #setup plot
+        # setup plot
         self.width = width
         self.height = height
         self.pos = {}
@@ -39,13 +39,14 @@ class BokehGraph:
         graph_renderer.layout_provider = StaticLayoutProvider(graph_layout=self.pos)
         self.making_labels()
         self.plot.renderers.append(graph_renderer)
-        
-    
+
     def _get_random_colors(self):
         colors = []
-        # for _ in range(len(self.graph.vertices)):
-        #     color = "#"+''.join([choice('0123456789ABCDEF') for j in range(6)])
-        #     colors.append(color)
+        """
+        for _ in range(len(self.graph.vertices)):
+             color = "#"+''.join([choice('0123456789ABCDEF') for j in range(6)])
+             colors.append(color)
+        """
         for key, value in self.graph.vertices.items():
             colors.append(value.color)
         return colors
@@ -61,7 +62,7 @@ class BokehGraph:
                     start_indices.append(edges.label)
                     end_indices.append(destination.label)
                 checked.add(vertex)
-        return dict(start=start_indices, end= end_indices)
+        return dict(start=start_indices, end=end_indices)
 
     def show(self, output_path='./graph.html'):
         output_file(output_path)
@@ -84,8 +85,9 @@ class BokehGraph:
             names.append(name)
         source = ColumnDataSource(data=dict(x=x, y=y, names=names))
         labels = LabelSet(x='x', y='y', text='names', level='overlay',
-                        text_align='center', text_baseline='middle',source=source, render_mode='canvas')
+                          text_align='center', text_baseline='middle', source=source, render_mode='canvas')
         self.plot.add_layout(labels)
+
 
 """
 this is used to randomly create new vertex and add edges
@@ -95,6 +97,7 @@ graph = Graph()
 
 i = set()
 v = set()
+
 for _ in range(20):
     rand = int(100 * random())
     i.add(rand)
@@ -102,6 +105,8 @@ for n in i:
     n = Vertex(n)
     graph.add_vertex(n)
     v.add(n)
+
+search = choice(tuple(v))
 
 for _ in range(12):
     first = choice(tuple(v))
@@ -125,7 +130,7 @@ non-random test
 # graph.add_edge(a, b)
 # graph.add_edge(a, d)
 
-graph.con_components()
+print(graph.con_components())
+# print(graph.bfs(search))
 bg = BokehGraph(graph)
 bg.show()
-
