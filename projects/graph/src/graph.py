@@ -12,8 +12,8 @@ class Vertex:
         self.edges = set()
         self.color = color
 
-    def __repr__(self):
-        return str(self.label)
+    # def __repr__(self):
+    #     return str(self.label)
 
 
 class Graph:

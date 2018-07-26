@@ -1,12 +1,11 @@
 """
 General drawing methods for graphs using Bokeh.
 """
-from random import choice, random
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle,
                           LabelSet, ColumnDataSource)
-from graph import Graph, Vertex
+from random import random
 
 
 class BokehGraph:
@@ -87,50 +86,3 @@ class BokehGraph:
         labels = LabelSet(x='x', y='y', text='names', level='overlay',
                           text_align='center', text_baseline='middle', source=source, render_mode='canvas')
         self.plot.add_layout(labels)
-
-
-"""
-this is used to randomly create new vertex and add edges
-"""
-graph = Graph()
-
-
-i = set()
-v = set()
-
-for _ in range(20):
-    rand = int(100 * random())
-    i.add(rand)
-for n in i:
-    n = Vertex(n)
-    graph.add_vertex(n)
-    v.add(n)
-
-search = choice(tuple(v))
-
-for _ in range(12):
-    first = choice(tuple(v))
-    second = choice(tuple(v))
-    graph.add_edge(first, second)
-    v.remove(first)
-
-"""
-non-random test
-"""
-# a = Vertex(0)
-# b = Vertex(1)
-# c = Vertex(2)
-# d = Vertex(30)
-
-# graph.add_vertex(a)
-# graph.add_vertex(b)
-# graph.add_vertex(c)
-# graph.add_vertex(d)
-
-# graph.add_edge(a, b)
-# graph.add_edge(a, d)
-
-print(graph.con_components())
-# print(graph.bfs(search))
-bg = BokehGraph(graph)
-bg.show()
